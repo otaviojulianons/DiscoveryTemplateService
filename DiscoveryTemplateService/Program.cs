@@ -1,4 +1,7 @@
 ﻿using System;
+using DiscoveryPrototypeService.Entities;
+using DiscoveryPrototypeService.Interfaces;
+using DiscoveryPrototypeService.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace StrategyService
@@ -28,46 +31,6 @@ namespace StrategyService
             var service = serviceProvider.GetService<IService<T>>();
             service.Domain = entityDomain;
             return service;
-        }
-    }
-
-    interface IEntityDomain
-    {
-        string Id { get; }
-    }
-
-    interface IService<T> where T : IEntityDomain
-    {
-        T Domain { get; set; }
-    }
-
-    class Customer : IEntityDomain
-    {
-        public string Id { get => "customer"; }
-    }
-
-    class Telephone : IEntityDomain
-    {
-        public string Id { get => "telephone"; }
-    }
-
-    class CustomerService : ServiceBase<Customer>
-    {
-        public override Customer Domain { get; set; }
-    }
-
-    class TelephoneService : ServiceBase<Telephone>
-    {
-        public override Telephone Domain { get; set; }
-    }
-
-    abstract class ServiceBase<T> : IService<T> where T : IEntityDomain
-    {
-        public abstract T Domain { get; set; }
-
-        public override string ToString()
-        {
-            return Domain?.Id ?? "interface";
         }
     }
 }
