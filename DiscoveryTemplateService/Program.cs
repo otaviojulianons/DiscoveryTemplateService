@@ -17,15 +17,17 @@ namespace StrategyService
             var customer = new Customer();
             var phone = new Telephone();
 
-            Console.WriteLine(DiscoveryService(customer)?.ToString());
-            Console.WriteLine(DiscoveryService(phone)?.ToString());
+            Console.WriteLine(DiscoveryService(customer).ToString());
+            Console.WriteLine(DiscoveryService(phone).ToString());
 
             Console.ReadKey();
         }
 
         static IService<T> DiscoveryService<T>(T entityDomain)  where T : IEntityDomain
         {
-            return serviceProvider.GetService<IService<T>>();
+            var service = serviceProvider.GetService<IService<T>>();
+            service.Domain = entityDomain;
+            return service;
         }
     }
 
@@ -51,19 +53,11 @@ namespace StrategyService
 
     class CustomerService : ServiceBase<Customer>
     {
-        public CustomerService()
-        {
-            Domain = new Customer();
-        }
         public override Customer Domain { get; set; }
     }
 
     class TelephoneService : ServiceBase<Telephone>
     {
-        public TelephoneService()
-        {
-            Domain = new Telephone();
-        }
         public override Telephone Domain { get; set; }
     }
 
